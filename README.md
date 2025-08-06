@@ -10,7 +10,7 @@
 
 - Verónica Rebolleda [🔗 LinkedIn](https://www.linkedin.com/in/m-veronica-rebolleda/)
 - Fabiana Fernández [🔗 LinkedIn](https://www.linkedin.com/in/fabiana-fernandez/)
-- Lucía Della Maddalena [🔗 LinkedIn](https://www.linkedin.com/in/luciadmaddalena/)
+- Lucía Natalí Della Maddalena [🔗 LinkedIn](https://www.linkedin.com/in/luciadmaddalena/)
 - Karen Giannetto [🔗 LinkedIn](https://www.linkedin.com/in/karen-giannetto/)
 
 Nos conocimos durante el curso de **Desarrollo Frontend** organizado por **Fundación YPF**, y decidimos continuar este camino de aprendizaje juntas, construyendo proyectos, compartiendo recursos y acompañándonos en nuestro crecimiento dentro del mundo del desarrollo web.
