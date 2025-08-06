@@ -37,12 +37,6 @@ Este repositorio tiene como fin:
 | `recursos/`       | Material complementario: links, guías, cheatsheets |
 | `README.md`       | Descripción general del proyecto |
 
----
-
-## 🤝 Cómo colaborar
-
-Si llegaste a este repo y te gustaría sumarte a nuestras prácticas o simplemente compartir ideas, ¡bienvenid@!  
-Podés abrir un issue o forkear el repo para aportar.
 
 ---
 
