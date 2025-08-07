@@ -1,6 +1,7 @@
 # Clase 3: Componentes Funcionales en React
 
 ## 🔄 Repaso rápido de la Clase 2
+
 - **JSX**: Sintaxis que parece HTML pero se transpila a `React.createElement()`
 - **Fragmentos**: `<>...</>` para agrupar elementos sin agregar nodos extra al DOM
 - **Props**: Datos que pasan de componente padre a hijo (inmutables)
@@ -10,12 +11,15 @@
 ## 🏗️ 1. ¿Qué son los Componentes Funcionales?
 
 ### 📌 Concepto técnico:
+
 Un **componente funcional** es una función JavaScript que:
+
 - Recibe un objeto `props` como parámetro
 - Retorna JSX (elementos de React)
 - Representa una parte reutilizable de la interfaz
 
 ### 💡 Explicación simple:
+
 Es como una "máquina" que recibe ingredientes (props) y produce una parte de la página web (JSX).
 
 ```jsx
@@ -33,12 +37,12 @@ function Saludo({ nombre }) {
 ### 🧩 Anatomía de un componente funcional:
 
 ```jsx
-import React from 'react'; // 1. Importar React
+import React from "react"; // 1. Importar React
 
 // 2. Definir la función (siempre PascalCase)
 function NombreComponente({ prop1, prop2 }) {
   // 3. Lógica del componente (opcional)
-  
+
   // 4. Return con JSX
   return (
     <div>
@@ -61,11 +65,11 @@ export default NombreComponente;
 Crear el archivo `src/Button.jsx`:
 
 ```jsx
-import React from 'react';
+import React from "react";
 
 function Button({ texto, onClick, color = "blue" }) {
   return (
-    <button 
+    <button
       onClick={onClick}
       style={{
         backgroundColor: color,
@@ -75,7 +79,7 @@ function Button({ texto, onClick, color = "blue" }) {
         borderRadius: "5px",
         cursor: "pointer",
         fontSize: "16px",
-        margin: "5px"
+        margin: "5px",
       }}
     >
       {texto}
@@ -111,18 +115,18 @@ function Contador({ inicial = 0, nombre = "Contador" }) {
   };
 
   return (
-    <div style={{ 
-      border: "2px solid #ddd", 
-      padding: "20px", 
-      margin: "20px 0",
-      borderRadius: "10px",
-      textAlign: "center" 
-    }}>
+    <div
+      style={{
+        border: "2px solid #ddd",
+        padding: "20px",
+        margin: "20px 0",
+        borderRadius: "10px",
+        textAlign: "center",
+      }}
+    >
       <h3>{nombre}</h3>
-      <p style={{ fontSize: "24px", fontWeight: "bold" }}>
-        Valor: {contador}
-      </p>
-      
+      <p style={{ fontSize: "24px", fontWeight: "bold" }}>Valor: {contador}</p>
+
       <button onClick={decrementar}>➖ Restar</button>
       <button onClick={resetear} style={{ margin: "0 10px" }}>
         🔄 Reset
@@ -136,7 +140,9 @@ export default Contador;
 ```
 
 ### 🧠 Adelanto: ¿Qué es `useState`?
-El componente `Contador` usa nuestro **primer Hook**: `useState`. 
+
+El componente `Contador` usa nuestro **primer Hook**: `useState`.
+
 - Permite que el componente "recuerde" información que puede cambiar
 - Cuando cambia el estado, React re-dibuja automáticamente el componente
 - En la **Clase 4** profundizaremos este concepto
@@ -146,6 +152,7 @@ El componente `Contador` usa nuestro **primer Hook**: `useState`.
 ## 🔗 3. Composición de componentes
 
 ### 📌 Concepto técnico:
+
 La **composición** es el proceso de combinar componentes pequeños para crear interfaces más complejas.
 
 ### Tu `App.jsx` actualizado:
@@ -177,14 +184,12 @@ function App() {
   return (
     <>
       <Header titulo="Mi primera app React completa" />
-      
+
       <div style={{ padding: "20px" }}>
         <h2>Bienvenidas a nuestra primera app con React</h2>
-        
+
         {/* Mostrar mensaje dinámico */}
-        <p style={{ fontSize: "18px", color: "blue" }}>
-          {mensaje}
-        </p>
+        <p style={{ fontSize: "18px", color: "blue" }}>{mensaje}</p>
 
         {/* Botones con diferentes funcionalidades */}
         <div>
@@ -214,7 +219,6 @@ export default App;
 2. **Crear Contador.jsx** en tu carpeta `src/`
 3. **Actualizar App.jsx** con el nuevo código
 4. **Ejecutar** `npm run dev` para ver los cambios
-
 
 ---
 
@@ -270,7 +274,9 @@ function App() {
 // El componente hijo ejecuta la función (en Button.jsx)
 function Button({ texto, onClick, color }) {
   return (
-    <button onClick={onClick}>  {/* Aquí se ejecuta */}
+    <button onClick={onClick}>
+      {" "}
+      {/* Aquí se ejecuta */}
       {texto}
     </button>
   );
@@ -295,6 +301,7 @@ src/
 ```
 
 ### 📝 Convenciones de nombres:
+
 - **Componentes**: `PascalCase` → `MiComponente.jsx`
 - **Archivos comunes**: `camelCase` → `utilidades.js`
 - **Estilos**: `kebab-case` → `mi-componente.css`
@@ -304,11 +311,13 @@ src/
 ## 🎯 Lo que ya logramos
 
 ### ✅ Componentes funcionando:
+
 - **Header**: Recibe `titulo` como prop
-- **Button**: Recibe `texto`, `onClick` y `color` como props  
+- **Button**: Recibe `texto`, `onClick` y `color` como props
 - **Contador**: Usa `useState` para manejar estado local y recibe `inicial` y `nombre`
 
 ### ✅ Conceptos aplicados:
+
 - **Composición**: App combina Header + Button + Contador
 - **Props**: Comunicación de padre a hijo
 - **Eventos**: onClick en los botones
@@ -321,18 +330,20 @@ src/
 ### Crea un componente `Tarjeta.jsx` (opcional):
 
 ```jsx
-import React from 'react';
+import React from "react";
 
 function Tarjeta({ titulo, descripcion, color = "#f9f9f9" }) {
   return (
-    <div style={{
-      border: '1px solid #ddd',
-      borderRadius: '8px',
-      padding: '16px',
-      margin: '10px',
-      maxWidth: '300px',
-      backgroundColor: color
-    }}>
+    <div
+      style={{
+        border: "1px solid #ddd",
+        borderRadius: "8px",
+        padding: "16px",
+        margin: "10px",
+        maxWidth: "300px",
+        backgroundColor: color,
+      }}
+    >
       <h3>{titulo}</h3>
       <p>{descripcion}</p>
     </div>
@@ -348,13 +359,13 @@ export default Tarjeta;
 // Agregar después de los contadores
 <div>
   <h3>Tarjetas informativas:</h3>
-  <Tarjeta 
-    titulo="React" 
+  <Tarjeta
+    titulo="React"
     descripcion="Biblioteca para construir interfaces"
     color="#e3f2fd"
   />
-  <Tarjeta 
-    titulo="Components" 
+  <Tarjeta
+    titulo="Components"
     descripcion="Bloques reutilizables de código"
     color="#f1f8e9"
   />
@@ -365,19 +376,20 @@ export default Tarjeta;
 
 ## 🧠 Conceptos clave para recordar
 
-| Concepto | Definición | Ejemplo |
-|----------|------------|---------|
-| **Componente Funcional** | Función que retorna JSX | `function Mi() { return <div/>; }` |
-| **Props** | Datos que pasan de padre a hijo | `<Hijo nombre="Juan" />` |
-| **Destructuring** | Extraer propiedades del objeto props | `function({ nombre })` |
-| **Composición** | Combinar componentes pequeños | `<App><Header/><Main/></App>` |
-| **Export/Import** | Conectar componentes entre archivos | `export default Mi;` |
+| Concepto                 | Definición                           | Ejemplo                            |
+| ------------------------ | ------------------------------------ | ---------------------------------- |
+| **Componente Funcional** | Función que retorna JSX              | `function Mi() { return <div/>; }` |
+| **Props**                | Datos que pasan de padre a hijo      | `<Hijo nombre="Juan" />`           |
+| **Destructuring**        | Extraer propiedades del objeto props | `function({ nombre })`             |
+| **Composición**          | Combinar componentes pequeños        | `<App><Header/><Main/></App>`      |
+| **Export/Import**        | Conectar componentes entre archivos  | `export default Mi;`               |
 
 ---
 
 ## 🚀 Próximos pasos (Clase 4)
 
 En la siguiente clase profundizaremos en:
+
 - **Hooks básicos**: `useState` para manejar estado
 - **Interactividad**: Eventos y cambios de estado
 - **Ciclo de vida**: Cuándo se crean y actualizan los componentes
@@ -389,27 +401,30 @@ En la siguiente clase profundizaremos en:
 
 ✅ **Hazlo**: Un componente por archivo  
 ✅ **Hazlo**: Nombres en PascalCase  
-✅ **Hazlo**: Props descriptivas y específicas  
+✅ **Hazlo**: Props descriptivas y específicas
 
 ❌ **Evita**: Componentes gigantes  
 ❌ **Evita**: Modificar las props dentro del componente  
-❌ **Evita**: Lógica compleja en el JSX  
+❌ **Evita**: Lógica compleja en el JSX
 
 ---
 
 ## 💡 Preguntas para la clase
 
 1. **¿Por qué creamos componentes separados?**
+
    - Reutilización de código
    - Organización y mantenimiento
    - Separación de responsabilidades
 
 2. **¿Cuándo usar un archivo nuevo para un componente?**
+
    - Si el componente es reutilizable
    - Si tiene lógica compleja
    - Si ayuda a mantener App.jsx limpio
 
 3. **¿Qué es mejor: un archivo grande o muchos pequeños?**
+
    - Muchos pequeños = más organizado
    - Un componente por archivo = estándar de la industria
 
@@ -417,19 +432,36 @@ En la siguiente clase profundizaremos en:
    - props: datos que recibe el componente (inmutables).
    - state: datos internos que pueden cambiar.
 
-
 ## Atributos con JSX (Detalles sintaxis)
 
 ⚠️ En JSX, los nombres de atributos suelen estar en camelCase
 
-  - Se puede utilizar comillas para especificar valor string 
+- Se puede utilizar comillas para especificar valor string
+
 ```jsx
-const elemento = <div tabIndex="0"> </div>
+const elemento = <div tabIndex="0"> </div>;
 ```
 
-  - Usar llaves para insertar expresión Js
+- Usar llaves para insertar expresión Js
+
 ```jsx
-const elemento = <img src={user.avatarUrl} />
+const elemento = <img src={user.avatarUrl} />;
 ```
 
+## Extra 🤔 ¿Existen otras formas de crear componentes?
 
+### 📌 Respuesta corta: Sí, pero nos enfocamos en la mejor práctica actual
+
+Históricamente, React permitía crear componentes de dos formas:
+
+- **Componentes funcionales** (lo que estamos aprendiendo) ✅
+- **Componentes de clase** (forma antigua) ⚠️
+
+**¿Por qué solo vemos componentes funcionales?**
+
+- Son más simples de entender y escribir
+- Mejor rendimiento
+- Con Hooks (que veremos en Clase 4) pueden hacer todo lo que las clases
+- Es el estándar actual de la industria React
+
+💡 **Para el futuro:** Si alguna vez ves código con `class MiComponente extends React.Component`, eso son componentes de clase. Son válidos, pero no los recomendamos para proyectos nuevos.
