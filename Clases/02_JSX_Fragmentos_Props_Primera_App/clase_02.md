@@ -4,38 +4,31 @@
 
 ### 📌 **Concepto técnico:**
 
-- JSX (JavaScript XML) es una **extensión de sintaxis para JavaScript** que nos permite escribir elementos HTML dentro del código JavaScript.
-- Aunque **parece HTML**, en realidad es **transpilado a JavaScript puro** (React lo convierte con `React.createElement`).
+- JSX (JavaScript XML) es una **extensión de sintaxis para JavaScript** que permite escribir una estructura similar a HTML dentro del código JS.
+- Aunque **parece HTML**, en realidad es **transpilado a JavaScript puro** antes de llegar al navegador.
+- Esta conversión la hacen herramientas como **Babel**, que transforman JSX en llamadas a funciones como `React.createElement`.
 - JSX permite que el código sea **más declarativo, legible y cercano al DOM real**.
 
 ### 💡 **Explicación simple:**
 
 - Es como escribir HTML, pero dentro de JavaScript. No es estrictamente HTML, pero se parece mucho.
-- El navegador no lo entiende directamente. Por eso usamos herramientas como Babel que lo **transpilan** (lo convierten) a código JS nativo antes de que llegue al navegador.
+- El navegador no lo entiende directamente, así que lo convertimos previamente a código JS que React puede interpretar.
 
 ###🧪 **¿Qué significa "transpilar"?**
 
-    Transpilar (de transpile = translate + compile) significa convertir código escrito en una sintaxis avanzada a una más básica que pueda entender el navegador.
+    Transpilar (de transpile = translate + compile) es convertir código moderno a una versión que el navegador entienda.
 
-    En el caso de React, JSX no es un estándar del navegador, por eso debe ser convertido a JavaScript puro antes de ejecutarse.
+    JSX es una sintaxis que no existe en el navegador. Por eso, herramientas como Babel lo transpilan a llamadas a React.createElement.
 
-### 🧠 **Ejemplo:**
+### 🧠 **¿Cómo funciona internamente?**
 
 ```jsx
 const elemento = <h1>Hola, mundo</h1>;
-// Esto se transpila a:
-React.createElement("h1", null, "Hola, mundo");
 ```
 
-Este fragmento usa JSX, una extensión de JavaScript que permite escribir elementos de React de forma declarativa y parecida a HTML.
+Esto no es HTML, aunque lo parezca. Es JSX, y React lo transforma en:
 
-Aunque parece HTML, JSX no es HTML: es azúcar sintáctico que se transforma en llamadas a React.createElement.
-
-### 🔧 **¿Cómo lo interpreta React?**
-
-JSX no se ejecuta directamente en el navegador. Antes de que el código llegue al navegador, herramientas como Babel lo transpilan a JavaScript puro:
-
-```jsx
+```Js
 React.createElement("h1", null, "Hola, mundo");
 ```
 
@@ -47,9 +40,7 @@ Esto significa:
 
 - 'Hola, mundo': el contenido del elemento, que será el child (hijo) del h1.
 
-### 🧩 **¿Qué devuelve React.createElement?**
-
-Devuelve un objeto de tipo React Element, algo así:
+Que a su vez React lo interpreta como este objeto:
 
 ```Js
 {
@@ -60,17 +51,33 @@ Devuelve un objeto de tipo React Element, algo así:
 }
 ```
 
-Este objeto es lo que React usa internamente para construir el Virtual DOM, comparar cambios y renderizar eficientemente en el navegador.
+Este objeto es lo que React usa internamente para construir el Virtual DOM, compararlo con la versión anterior y decidir qué renderizar en la pantalla.
+
+En síntesis:
+
+JSX:
+
+  <h1>Hola, mundo</h1>
+
+↓ se convierte en ↓
+
+Objeto React:
+{
+type: "h1",
+props: {
+children: "Hola, mundo"
+}
+}
 
 ## 🧙‍♀️ ¿Por qué es útil JSX?
 
-✅ Más legible y expresivo que React.createElement.
+✅ Es más legible y expresivo que escribir React.createElement manualmente
 
 ✅ Permite componer interfaces como si fueran HTML, pero con todo el poder de JavaScript.
 
-✅ Facilita el trabajo con componentes, props y lógica condicional.
+✅ Permite combinar JavaScript con estructuras visuales (condiciones, bucles, props).
 
-✅ Mejora la productividad y la claridad del código en proyectos React.
+✅ Mejora la productividad y la claridad del código en proyectos React, al escribir componentes.
 
 ## 🧩 Resumen
 
@@ -91,7 +98,7 @@ Los Fragmentos en React permiten agrupar múltiples elementos sin añadir nodos 
 
 - En React, cada componente debe retornar un único elemento padre.
 
-- Si se necesita agrupar múltiples elementos sin agregar un nodo(div) extra al DOM, se puede usar un Fragmento.
+- Si se necesita agrupar múltiples elementos sin agregar un nodo extra al DOM, se puede usar un Fragmento.
 
 - React ofrece dos formas de escribir fragmentos:
 
@@ -113,9 +120,41 @@ En vez de envolver todo en un <div>, usamos fragmentos para que React no se quej
 
     - Cuando estás devolviendo varios elementos JSX hermanos.
 
-    - Cuando no querés agregar etiquetas HTML extras (por ejemplo, div, section, etc.).
+    - Cuando no querés agregar etiquetas HTML extras (por ejemplo, div, section, etc.). Por ej:
+
+```Js
+  <div>
+    <h1>Título</h1>
+    <p>Contenido</p>
+  </div>   ← Agrega un nodo extra (el div)
+
+  <>
+    <h1>Título</h1>
+    <p>Contenido</p>
+  </>       ← No agrega ningún nodo visible
+```
 
     - Cuando te importa mantener un DOM limpio, sin elementos innecesarios que puedan romper el diseño o el estilo.
+
+### 🛠️ **Ejemplo de"error" de un componente sin Fragmentos**
+
+```Js
+return (
+  <h1>Título</h1>
+  <p>Contenido</p> // ❌ Error: Adjacent JSX elements must be wrapped in an enclosing tag
+);
+```
+
+Solución con Fragmentos:
+
+```Js
+return (
+  <>
+    <h1>Título</h1>
+    <p>Contenido</p>
+  </>
+);
+```
 
 ### 🧠 **Ejemplo de transpilación de un componente con Fragmentos:**
 
@@ -137,7 +176,7 @@ return (
 - Lo anterior se transpila (es decir, se convierte de JSX a llamadas React.createElement) a:
 
 ```Js
-React.createElement(React.Fragment, null,
+  React.createElement(React.Fragment, null,
   React.createElement('h1', null, 'Título'),
   React.createElement('p', null, 'Contenido')
 );
@@ -208,7 +247,7 @@ El componente padre es el que invoca o usa otro componente dentro de su JSX.
 
 El componente hijo es el que recibe props y se encarga de renderizar algo con esos datos.
 
-### 🧠 \*\*Ejemplo
+### 🧠 **Ejemplo**
 
 ✅ Versión 1: Acceso tradicional, usando el objeto completo
 
@@ -250,7 +289,7 @@ function Saludo({ nombre }) {
 
 El componente App es el padre porque usa el componente Saludo.
 
-Le pasa una prop llamada nombre con el valor "Fabiana".
+Le pasa una prop llamada nombre con el valor "Pepita".
 
 El componente Saludo es el hijo porque recibe esa prop.
 
@@ -260,7 +299,10 @@ Dentro de Saludo, se accede a nombre y se muestra en pantalla.
 Cuando React ve esto:
 
 ```Jsx
-<Saludo nombre="Pepita" />
+// Este es el componente padre
+function App() {
+  return <Saludo nombre="Pepita" />;
+}
 ```
 
 lo transpila a :
@@ -272,13 +314,19 @@ React.createElement(Saludo, { nombre: 'Pepita' });
 Y dentro del componente Saludo, React interpreta:
 
 ```Js
-props = { nombre: 'Fabiana' };
+// Cuando React ejecuta ese componente, pasa props como argumento:
+function Saludo(props) {
+  // props = { nombre: 'Pepita' }
+  return <h1>Hola, {props.nombre}</h1>;
+}
 ```
 
-Si se está usando destructuring:
+O si se está usando destructuring:
 
 ```Js
-const { nombre } = props;
+function Saludo({ nombre }) {
+  return <h1>Hola, {nombre}</h1>;
+}
 ```
 
 Esto renderiza:
@@ -309,6 +357,20 @@ Hola, Pepita
 ✅ Mejora la claridad: cada componente tiene una responsabilidad clara.
 
 ### 🧩 **En síntesis:**
+
+Flujo:
+
+```Js
+<App />
+   ↓ renderiza →
+<Saludo nombre="Pepita" />
+   ↓ se transpila a →
+React.createElement(Saludo, { nombre: 'Pepita' })
+   ↓ ejecuta →
+function Saludo(props) {
+  return <h1>Hola, {props.nombre}</h1>;
+}
+```
 
 | Elemento        | Rol                   | Función principal                       | Archivo sugerido        | Tipo de entidad           |
 | --------------- | --------------------- | --------------------------------------- | ----------------------- | ------------------------- |
