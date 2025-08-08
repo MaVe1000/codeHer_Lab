@@ -1,0 +1,16 @@
+:root {
+  --color-fondo: #0a192f;
+  --color-principal: #64ffda;
+  --color-secundario: #ccd6f6;
+  --color-texto: #8892b0;
+  --font-principal: "Segoe UI", sans-serif;
+}
+
+body {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--font-principal);
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
