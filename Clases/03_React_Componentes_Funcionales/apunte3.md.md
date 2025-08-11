@@ -2,9 +2,9 @@
 
 ## 🔄 Repaso rápido de la Clase 2
 
-- **JSX**: Sintaxis que parece HTML pero se transpila a `React.createElement()`
-- **Fragmentos**: `<>...</>` para agrupar elementos sin agregar nodos extra al DOM
-- **Props**: Datos que pasan de componente padre a hijo (inmutables)
+- **JSX**: Sintaxis que parece HTML pero se transpila a `React.createElement()` (para ser "entendido" por React y el navegador)
+- **Fragmentos**: `<>...</>` o <React.Fragment>...</React.Fragment> para agrupar elementos sin agregar nodos HTML extra al DOM
+- **Props**: Datos que pasan de componente padre a hijo (inmutables) a través de un objeto (props entero o con props desestructuradas) 
 
 ---
 
@@ -39,7 +39,7 @@ function Saludo({ nombre }) {
 ```jsx
 import React from "react"; // 1. Importar React
 
-// 2. Definir la función (siempre PascalCase)
+// 2. Definir la función (siempre PascalCase) / Recibir props (Destructuring)
 function NombreComponente({ prop1, prop2 }) {
   // 3. Lógica del componente (opcional)
 
@@ -98,7 +98,7 @@ Crear el archivo `src/Contador.jsx`:
 import React, { useState } from "react";
 
 function Contador({ inicial = 0, nombre = "Contador" }) {
-  // ¡Aquí usamos nuestro primer Hook!
+  // useState nos permite "recordar" valores que cambian (!Hooks)
   const [contador, setContador] = useState(inicial);
 
   // Funciones para manejar eventos
@@ -158,7 +158,7 @@ La **composición** es el proceso de combinar componentes pequeños para crear i
 ### Tu `App.jsx` actualizado:
 
 ```jsx
-import React, { useState } from "react";
+import React, { useState } from "react";    // useState: añade un estado (este recuerda info y la muestra)
 import Header from "./Header.jsx";
 import Button from "./Button.jsx";
 import Contador from "./Contador.jsx";
@@ -166,7 +166,7 @@ import "./App.css";
 
 function App() {
   // Estado para demostrar funcionalidad
-  const [mensaje, setMensaje] = useState("¡Hola React!");
+  const [mensaje, setMensaje] = useState("¡Hola React!"); //-> const [var estado, función para cambiar valor] = useState("valor Inicial");
 
   // Funciones para los botones
   const saludar = () => {
@@ -227,9 +227,9 @@ export default App;
 ### 🔍 Props con valores por defecto:
 
 ```jsx
-function Tarjeta({ titulo = "Sin título", descripcion, color = "#f0f0f0" }) {
+function Tarjeta({ titulo = "Sin título", descripcion, activo = false, color = "gray"  }) {
   return (
-    <div style={{ backgroundColor: color }}>
+    <div style={{ backgroundColor: activo ? 'green' : color }}>
       <h3>{titulo}</h3>
       <p>{descripcion}</p>
     </div>
@@ -259,6 +259,8 @@ function Insignia({ texto, activo }) {
 ```
 
 ### Props como funciones (Ya implementado en tu Button):
+
+Concepto: El componente padre define QUÉ hacer, el hijo CUÁNDO hacerlo.
 
 ```jsx
 // El componente padre define qué hacer (en App.jsx)
