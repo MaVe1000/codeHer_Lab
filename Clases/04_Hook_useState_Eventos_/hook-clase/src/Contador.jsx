@@ -10,16 +10,17 @@ const [num, setNum] = useState(0);
 // useState tiene el valor inicial que le pasamos
 
 
+//funcion manejadora del evento onClick
 const sumar = () => {
-  setNum(num+1);
+setNum(num+1);
 }
 
-//JSX
-  return (
-  <div className="Contador">
-      <button onClick={sumar}> +1 </button>
+//jsx
+return (
+    <div>
+      <button onClick={sumar}>+1</button>
       <p>{num}</p>
-  </div>
-  )
+    </div>
+)
 }
 

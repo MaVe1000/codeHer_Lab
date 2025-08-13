@@ -93,6 +93,13 @@ function FormularioControlado() {
   );
 }
 ```
+
+e → Es el objeto del evento que React te pasa automáticamente.
+
+e.target → Es el elemento HTML donde ocurrió el evento (por ejemplo, un <input>).
+
+e.target.value → Es el valor que tiene ese elemento en ese momento (lo que el usuario escribió, seleccionó, etc.).
+
 Ventajas:
 - React controla completamente el valor
 - Fácil validación y manipulación
@@ -132,6 +139,7 @@ const miFuncion = useCallback(() => {
   // función
 }, [dependencias]);
 ```
+
 🔧 Hooks Avanzados:
 - useRef - Referencias a elementos DOM
 - useLayoutEffect - Efectos síncronos

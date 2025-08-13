@@ -1,6 +1,7 @@
 import React from 'react';
 import { Contador } from './Contador';
-
+import { Formulario} from './Formulario';
+import { Counter } from './Counter';
 
 function App() {
 //estado: 
@@ -9,7 +10,7 @@ function App() {
 
   return (
   <div className="App">
-      <Contador />
+      <Formulario />
     </div>
   )
 }
