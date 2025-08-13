@@ -1,24 +1,28 @@
-/* import { useState } from "react";
+import { useState } from "react";
 
 export const Formulario = () => {
     //Estado
-    const [valorInput, setValorInput] = useState('');
-    
+    const [valorInput, setValorInput] = useState('hola');
+     
     //funcion manejadora del evento onChange
-    const onChange = () => {
-      console.log('Se esta tecleando');
+    
+    const onChange = (evento) => {
+        const valorInput = evento.target.value; 
+        setValorInput(valorInput);
     }
-
+    
+    
+   
     //JSX
     return (
         <div>
-            <input onChange={onChange} /> 
+            <input value={valorInput} onChange={onChange} /> 
             <p>{valorInput}</p>
         </div>
     )
 
 }
- */
+
 
 
 
