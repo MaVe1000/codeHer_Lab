@@ -3,23 +3,26 @@ import React, { useState } from "react";
 import Header from "./Header.jsx";
 import Button from "./Button.jsx";
 import Contador from "./Contador.jsx";
-import "./App.css"; 
+import "./App.css";
 
 function App() {
   // Estado para demostrar funcionalidad
   const [mensaje, setMensaje] = useState("¡Hola React!");
-
+  const [mensajeColor, setMensajeColor] = useState("blue"); // para cambiar el color del mensaje
   // Funciones para los botones
   const saludar = () => {
     setMensaje("¡Hola desde React! 👋");
+    setMensajeColor("green");
   };
 
   const cambiarColor = () => {
     setMensaje("¡Color cambiado! 🎨");
+    setMensajeColor("purple");
   };
 
   const resetear = () => {
     setMensaje("¡Hola React!");
+    setMensajeColor("blue");
   };
 
   return (
@@ -30,14 +33,14 @@ function App() {
         <h2> Complementos y props </h2>
 
         {/* Mostrar mensaje dinámico */}
-        <p style={{ fontSize: "24px", color: "pink" }}>{mensaje}</p>
+        <p style={{ fontSize: "1.5rem", color: mensajeColor }}>{mensaje}</p>
 
         {/* Botones con diferentes funcionalidades */}
         <div>
           <h3>Botones con funciones:</h3>
           <Button texto="Saludar" onClick={saludar} color="green" />
           <Button texto="Cambiar" onClick={cambiarColor} color="purple" />
-          <Button texto="Reset" onClick={resetear} color="red" />
+          <Button texto="Reset" onClick={resetear} color="blue" />
         </div>
 
         {/* Contadores independientes */}
@@ -52,8 +55,6 @@ function App() {
 }
 
 export default App;
-
-
 
 /* 
 Sintaxis:
