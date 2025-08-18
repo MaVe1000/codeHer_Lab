@@ -75,6 +75,8 @@ const handleClick = () => {
 
 👉 Usar setCount(prev => prev + 1) cuando dependemos del estado anterior.
 
+Ese prev (abreviación de previous, en inglés "anterior") es el valor más actualizado del estado en ese momento, que React te da de manera segura.
+
 ## 4. Eventos con argumentos
 
 Cómo pasar parámetros a funciones en eventos:
