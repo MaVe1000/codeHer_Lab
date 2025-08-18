@@ -2,9 +2,9 @@
 
 ## 1) Estado con objetos y arrays
 
-Podés guardar en el estado cualquier tipo: booleanos, strings, objetos, arrays…
+Podés guardar en el estado cualquier tipo de datos: booleanos, strings, objetos, arrays…
 
-Con objetos y arrays, no mutes: siempre creá copias.
+Importante!!! --> Con objetos y arrays, no mutes: siempre creá copias.
 
 ```js
 // Objeto
@@ -82,6 +82,84 @@ setTodos((prev) =>
   prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
 );
 ```
+
+EXPLICACIÓN DE CADA UNO:
+
+Supongamos que tenemos un estado con una lista de todos (tareas):
+
+```js
+const [todos, setTodos] = useState([
+  { id: 1, title: "Estudiar React", completed: false },
+  { id: 2, title: "Practicar ejercicios", completed: true },
+]);
+```
+
+1. Para AGREGAR una nueva tarea:
+   👉 Copia todos los anteriores prev y agrega el nuevo al final como se muestra en el ejemplo.
+
+```js
+setTodos((prev) => [...prev, nuevo]);
+```
+
+Ejemplo: [1, 2] → [1, 2, nuevo].
+
+2. Eliminar por id
+
+```js
+setTodos((prev) => prev.filter((t) => t.id !== id));
+```
+
+👉 filter crea un nuevo array sin el elemento que tenga ese id.
+Ejemplo: si elimino el id=2:
+
+[{id:1}, {id:2}] → [{id:1}].
+
+3. Actualizar por id:
+
+```js
+setTodos((prev) =>
+  prev.map((t) => (t.id === id ? { ...t, title: "Nuevo" } : t))
+);
+```
+
+👉 map recorre todos los elementos:
+
+Si encuentra el que tiene el id, crea una copia ({ ...t }) y cambia su title.
+
+Si no, lo deja igual.
+
+Ejemplo:
+
+{id:1, title:"Viejo"} → {id:1, title:"Nuevo"}.
+
+4. Toggle booleano:
+
+```js
+setTodos((prev) =>
+  prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
+);
+```
+
+👉 Hace lo mismo que el anterior, pero cambia el valor completed a lo contrario:
+
+Si era false, pasa a true.
+
+Si era true, pasa a false.
+
+Ejemplo:
+{id:1, completed:false} → {id:1, completed:true}.
+
+---
+
+## ✅ En resumen:
+
+- spread (...) → copiar.
+
+- filter → eliminar.
+
+- map → editar o cambiar algo puntual.
+
+---
 
 ## 💻 Práctica — TODO List por componentes (con filtros y formulario “más complejo”)
 
