@@ -89,28 +89,30 @@
 
 ## 🗓️ **SEMANA 3** - Estado Avanzado y Efectos
 
-### **Clase 5** - Lunes 18/08
+### **Clase 5** - Lunes 18/08 y Miércoles 20/08 _(Tema extendido)_
 
-**🧠 Teoría (1h):** Estado Complejo y Listas
+**🧠 Teoría (1h - Lunes):** Estado Complejo y Listas
 
 - Estado con objetos y arrays
-- Inmutabilidad en React
+- Inmutabilidad en React (por qué importa)
 - Renderizado de listas con `.map()`
 - Keys en React: ¿por qué son importantes?
-- Patrón de actualización de arrays
+- Patrón de actualización de arrays (cheat-sheet)
 
-**💻 Práctica (1h):**
+**💻 Práctica (1h - Lunes + 2h - Miércoles):**
 
-- Lista de tareas (TODO List) básica
-- Agregar, eliminar y marcar como completado
-- Filtros simple (todos/completados/pendientes)
-- Manejo de formularios más complejos
+- **Lunes:** TODO List básico con componentes
+- **Miércoles:** TODO List avanzado con filtros y formulario complejo
+  - Componentes separados (`TodoApp`, `TodoForm`, `TodoList`, `TodoItem`)
+  - Filtros (todos/pendientes/completados)
+  - Formulario con múltiples campos (título, prioridad, fecha, notas)
+  - Validación básica
 
-**📁 Entregable:** TODO List funcional
+**📁 Entregable:** TODO List funcional y componentizado
 
 ---
 
-### **Clase 6** - Miércoles 20/08
+### **Clase 6** - Lunes 25/08
 
 **🧠 Teoría (1h):** useEffect y Ciclo de Vida
 
@@ -131,64 +133,135 @@
 
 ---
 
-## 🗓️ **SEMANA 4** - Proyecto Integrador
+## 🗓️ **SEMANA 4** - Integración y Proyecto
 
-### **Clase 7** - Lunes 25/08
+### **Clase 7** - Miércoles 27/08
 
-**🧠 Teoría (1h):** Patrones y Buenas Prácticas
+**🧠 Teoría (1h):** Formularios Avanzados y Validación
 
-- Composición vs herencia
-- Cuándo crear un nuevo componente
-- Estructura de carpetas escalable
-- Props drilling y cuándo es problema
-- Custom Hooks básicos
+- Formularios controlados vs no controlados
+- Validación en tiempo real
+- Custom hooks para formularios
+- Manejo de múltiples inputs
+- Validación con patrones y regex básicos
+- UX en formularios (mensajes de error, estados de carga)
 
 **💻 Práctica (1h):**
 
-- Refactoring del proyecto existente
-- Extraer lógica a custom hooks
-- Organizar componentes en carpetas
-- Aplicar buenas prácticas aprendidas
+- Formulario de contacto con validación completa
+- Custom hook `useForm` para reutilización
+- Validación de email, teléfono, campos requeridos
+- Integración con localStorage para guardar borradores
+
+**📁 Entregable:** Formulario robusto con validación
 
 ---
 
-### **Clase 8** - Miércoles 27/08 (?????)
+### **Clase 8** - Lunes 01/09
 
-**🧠 Teoría (1h):** Proyecto Final y Deployment
+**🧠 Teoría (1h):** Patrones, Custom Hooks y Buenas Prácticas
 
-- Planificación del proyecto integrador
-- Build de producción con Vite
-- Deploy gratuito en Netlify/Vercel
-- Próximos pasos en React
+- ¿Cuándo crear un componente nuevo?
+- Custom Hooks: extraer lógica reutilizable
+- Composición vs props drilling
+- Estructura de carpetas escalable
+- Convenciones de nomenclatura
+- Performance básica (cuándo React re-renderiza)
 
 **💻 Práctica (1h):**
 
-- Desarrollar proyecto final individual
-- Integrar todos los conceptos aprendidos
-- Deploy del proyecto
-- Presentación de proyectos (15 min por persona)
+- Crear custom hooks: `useLocalStorage`, `useApi`, `useToggle`
+- Refactorizar proyectos anteriores usando custom hooks
+- Organizar componentes en carpetas lógicas
+- Optimizar renders innecesarios
 
-**📁 Entregable Final:** Aplicación React completa deployada
+---
+
+### **Clase 9** - Miércoles 03/09
+
+**🧠 Teoría (1h):** Proyecto Integrador y Deployment
+
+- Planificación del proyecto final
+- Build de producción con Vite
+- Deploy gratuito en Netlify/Vercel
+- Variables de entorno en producción
+- Debugging y herramientas de desarrollo
+
+**💻 Práctica (1h):**
+
+- Definir proyecto integrador individual
+- Setup de deployment
+- Primeros pasos del proyecto final
+- Configuración de entorno de producción
+
+**📁 Entregable:** Proyecto desplegado y funcionando
+
+---
+
+## 🆕 **TEMAS IMPORTANTES AGREGADOS:**
+
+### ✅ **Custom Hooks (Clase 8)**
+
+**¿Por qué es importante?**
+
+- Reutilización de lógica entre componentes
+- Código más limpio y mantenible
+- Concepto fundamental en React moderno
+
+### ✅ **Formularios Avanzados (Clase 7)**
+
+**¿Por qué es importante?**
+
+- Los formularios son cruciales en aplicaciones reales
+- Validación es esencial para UX
+- Base para aplicaciones más complejas
+
+### ✅ **Performance Básica (Clase 8)**
+
+**¿Por qué es importante?**
+
+- Entender cuándo React re-renderiza
+- Evitar bugs comunes de performance
+- Preparación para conceptos avanzados
+
+### ✅ **Estructura de Proyectos (Clase 8)**
+
+**¿Por qué es importante?**
+
+- Escalabilidad del código
+- Colaboración en equipo
+- Buenas prácticas profesionales
 
 ---
 
 ## 🎯 **Proyectos Prácticos por Semana**
 
-| Semana | Proyecto                  | Conceptos aplicados             |
-| ------ | ------------------------- | ------------------------------- |
-| **1**  | Portfolio Personal Básico | JSX, Props, Componentes         |
-| **2**  | Calculadora Simple        | useState, Eventos, Lógica       |
-| **3**  | Gestor de Tareas          | Arrays, useEffect, LocalStorage |
-| **4**  | App de Clima o Recetas    | APIs, Custom Hooks, Deploy      |
+| Semana | Proyecto                  | Conceptos aplicados                                   |
+| ------ | ------------------------- | ----------------------------------------------------- |
+| **1**  | Portfolio Personal Básico | JSX, Props, Componentes                               |
+| **2**  | Calculadora Simple        | useState, Eventos, Lógica                             |
+| **3**  | **TODO List Avanzado**    | Estado complejo, useEffect, LocalStorage, Componentes |
+| **4**  | **Dashboard Personal**    | Custom Hooks, Formularios, APIs, Deploy               |
+
+**💡 Dashboard Personal incluirá:**
+
+- Lista de tareas persistente
+- Formulario de contacto validado
+- Widget del clima (API)
+- Reloj digital
+- Notas rápidas
+- Deploy en producción
 
 ---
 
-# React Intermedio (Semanas 5-6)
+### ⏳ **Para React Intermedio (próximo mes):**
 
-- React Router + navegación avanzada
-- Context API + estado global
-- Custom Hooks avanzados
-- Optimización (memo, useMemo, useCallback)
+- React Router (navegación)
+- Context API (estado global)
+- useReducer para estado complejo
+- Optimización avanzada (memo, useMemo)
+- Testing básico
+- TypeScript con React
 
 ---
 
