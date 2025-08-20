@@ -1,11 +1,11 @@
 import { useState } from "react";
 import "./TodoItem.css";
 
-export default function TodoItem({ todo, onToggle, onDelete, onEdit }) {
+export default function TodoItem({ todo, onToggle, onDelete, onEdit }) {  // EDITAR
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(todo.title);
 
-  const save = () => {
+  const save = () => {   
     const title = draft.trim();
     if (title && title !== todo.title) onEdit({ title });
     setEditing(false);

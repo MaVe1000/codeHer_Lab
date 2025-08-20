@@ -4,8 +4,8 @@ import "./FilterBar.css";
 export default function FilterBar({ filter, onChange, pending, done, total, onClearCompleted }) {
   const btn = (val, label) => (
     <button
-      onClick={() => onChange(val)}
-      className={`filter-btn ${filter === val ? "active" : ""}`}
+      onClick={() => onChange(val)}  //Cuando se hace clic en el botón, se llama a la función onChange con el valor del filtro correspondiente
+      className={`filter-btn ${filter === val ? "active" : ""}`} //Si el filtro actual es igual al valor del botón, se añade la clase "active"
     >
       {label}
     </button>
