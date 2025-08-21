@@ -2,7 +2,7 @@ import TodoItem from "./TodoItem";
 import "./TodoList.css";
 
 export default function TodoList({ items, onToggle, onDelete, onEdit }) {
-  if (items.length === 0) {
+  if (items.length === 0) {   // Si no hay tareas, mostramos un mensaje de aviso
     return (
       <p className="todo-empty">
         No hay tareas para mostrar.
