@@ -8,7 +8,7 @@ import "./TodoForm.css";
 
 const initial = { title: "", priority: "medium", dueDate: "", notes: "" };
 
-export default function TodoForm({ onAdd }) {
+ function TodoForm({ onAdd }) {
   const [form, setForm] = useState(initial);
   const [error, setError] = useState("");
 
@@ -75,3 +75,4 @@ export default function TodoForm({ onAdd }) {
     </form>
   );
 }
+export default TodoForm;
