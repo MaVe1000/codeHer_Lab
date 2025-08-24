@@ -8,68 +8,14 @@ _Lunes 25/08_
 
 ### ¿Qué vimos la clase pasada?
 
-En la clase anterior trabajamos con **estado complejo** y **listas en React**:
+**Estado complejo** y **listas en React**:
 
-```jsx
-// Estado con objetos y arrays (vectores/arreglos)
-const [todos, setTodos] = useState([
-  { id: 1, title: "Estudiar React", completed: false },
-]);
-// ↑ todos es un ARRAY/VECTOR que contiene objetos
-```
+- Arrays/vectores con `.map()` para renderizar listas
+- **Inmutabilidad**: `setTodos([...todos, nuevaTarea])` ✅ vs `todos.push()` ❌
+- **Keys estables**: usar IDs únicos, no índices
+- **Patrones**: agregar (spread), eliminar (filter), editar (map)
 
-**📝 Aclaración sobre "listas":**
-En React, cuando hablamos de **"listas"** nos referimos a **arrays/vectores** que contienen datos (objetos, strings, números, etc.) que queremos mostrar en pantalla usando `.map()`.
-
-- [🔗 Listas en React y uso de .map()](listasReact.md)
-
-### Reglas importantes que vimos:
-
-**🔸 Inmutabilidad (no mutar):**
-
-```jsx
-// ❌ MAL - Mutar directamente
-todos.push(nuevaTarea); // Modifica el array original
-setTodos(todos);
-
-// ✅ BIEN - Crear copia nueva
-setTodos([...todos, nuevaTarea]); // Crea un array nuevo
-```
-
-_¿Por qué?_ React compara referencias. Si modificas el original, React puede no detectar el cambio.
-
-Los tres puntos (...) en JavaScript se llaman **spread operator**. Se usan mucho para crear un nuevo estado a partir del anterior.
-
-**🔸 Keys estables en listas:**
-
-```jsx
-// ❌ MAL - usar index como key
-{
-  todos.map((todo, index) => <li key={index}>{todo.title}</li>);
-}
-
-// ✅ BIEN - usar ID único
-{
-  todos.map((todo) => <li key={todo.id}>{todo.title}</li>);
-}
-```
-
-_¿Por qué?_ React usa las keys para identificar qué elementos cambiaron, se agregaron o eliminaron.
-
-**🔸 Patrones de actualización:**
-
-```jsx
-// Agregar: spread operator (...) copia todo y agrega al final
-setTodos((prev) => [...prev, nuevoTodo]);
-
-// Eliminar: filter crea nuevo array sin el elemento
-setTodos((prev) => prev.filter((t) => t.id !== idAEliminar));
-
-// Editar: map recorre y cambia solo el que coincide
-setTodos((prev) =>
-  prev.map((t) => (t.id === idAEditar ? { ...t, completed: !t.completed } : t))
-);
-```
+**Dudas clase pasada** --> [.map() y listas](listasReact.md)
 
 ### 🤔 Pregunta de conexión
 
@@ -83,670 +29,379 @@ setTodos((prev) =>
 
 ### 1. ¿Qué es useEffect?
 
-**useEffect** es un hook que nos permite ejecutar **efectos secundarios** en nuestros componentes.
+**useEffect** ejecuta **efectos secundarios** en nuestros componentes.
 
 **¿Qué son los efectos secundarios?**
+Operaciones que van "más allá" del renderizado: APIs, timers, localStorage, etc.
 
-- Operaciones que van "más allá" del renderizado
-- Ejemplos: llamadas a APIs, timers, localStorage, suscripciones
+### 2. Estructura básica de useEffect
+
+- useEffect( (no recibe parámetros) => { código que se ejecuta } , [ array de dependencias ]);
 
 ```jsx
 import { useEffect, useState } from "react";
 
-function MiComponente() {
-  const [count, setCount] = useState(0);
+useEffect(() => {
+  // 🎯 Código que se ejecuta
+  console.log("Efecto ejecutado");
 
-  // ✨ Efecto secundario que actualiza titulo
-  useEffect(() => {
-    document.title = `Contador: ${count}`;
-  });
-
-  return <button onClick={() => setCount(count + 1)}>{count}</button>;
-}
+  // 🧹 Cleanup (opcional)
+  return () => {
+    console.log("Limpieza");
+  };
+}, [dependencias]); // 📦 Array de dependencias
 ```
 
-### 2. Tipos de useEffect (según dependencias)
+### 3. ¿Qué son las dependencias?
 
-#### 🔸 **Sin dependencias** → Se ejecuta en cada render
+Las **dependencias** son variables que useEffect "observa". Cuando cambian, el efecto se vuelve a ejecutar.
+
+```jsx
+const [count, setCount] = useState(0);
+const [name, setName] = useState("");
+
+useEffect(() => {
+  console.log("Count o name cambiaron");
+}, [count, name]); // ← count y name son dependencias
+```
+
+### 4. Tipos de useEffect según dependencias
+
+#### 🔸 **Sin array de dependencias** → Se ejecuta en cada render
 
 ```jsx
 useEffect(() => {
-  console.log("Se ejecuta en cada render");
-});
+  console.log("Se ejecuta en CADA render");
+}); // ← Sin segundo parámetro
 ```
 
-**⚠️ Cuidado:** Puede causar loops infinitos
+**⚠️ Peligro:** Puede causar loops infinitos
 
-#### 🔸 **Con array vacío []** → Solo al montar el componente
+#### 🔸 **Con array vacío []** → Solo una vez (al montar)
 
 ```jsx
 useEffect(() => {
-  console.log("Solo se ejecuta una vez (al montarse)");
+  console.log("Solo UNA vez al montarse");
 }, []); // ← Array vacío
 ```
 
-**Uso típico:** Fetch inicial de datos, setup de listeners
+**Uso típico:** Fetch inicial, configurar listeners
 
-#### 🔸 **Con dependencias [var1, var2]** → Cuando cambian las dependencias
-
-```jsx
-useEffect(() => {
-  console.log("Se ejecuta cuando count o name cambian");
-}, [count, name]); // ← Solo se ejecuta si cambian count o name
-```
-
-### 3. Cleanup de efectos
-
-Algunos efectos necesitan "limpieza" (cleanup) cuando el componente se desmonta o antes de ejecutar el efecto nuevamente.
+#### 🔸 **Con dependencias [var1, var2]** → Cuando cambian
 
 ```jsx
 useEffect(() => {
-  const timer = setInterval(() => {
-    console.log("Cada segundo");
-  }, 1000);
-
-  // 🧹 Cleanup function
-  return () => {
-    clearInterval(timer); // Limpia el timer
-  };
-}, []);
+  console.log("Cuando count cambia");
+}, [count]); // ← Solo si count cambia
 ```
 
-**¿Cuándo usar cleanup?**
+### 5. Ciclo de Vida y useEffect
 
-- Timers (setInterval, setTimeout)
-- Suscripciones a eventos
-- Conexiones WebSocket
-- Cancelar requests HTTP
+**¿Qué es el ciclo de vida?**
+Es como la "vida" de un componente: **nace**, **vive** (cambia), y **muere**.
 
-### 4. Casos de uso comunes
+```jsx
+// Ejemplo práctico: cuando cambias de página en una app
+function MiComponente() {
+  useEffect(() => {
+    // 🏗️ MONTAJE: El componente aparece por primera vez
+    console.log("¡Hola! Aparecí en pantalla");
 
-| Caso de uso           | Dependencias   | Ejemplo                           |
-| --------------------- | -------------- | --------------------------------- |
-| **Fetch inicial**     | `[]`           | Cargar datos al montar            |
-| **Actualizar título** | `[count]`      | Cambiar title cuando count cambia |
-| **Timer/Reloj**       | `[]` + cleanup | setInterval con clearInterval     |
-| **LocalStorage**      | `[data]`       | Guardar cuando data cambia        |
-| **Resize listener**   | `[]` + cleanup | window.addEventListener           |
+    return () => {
+      // 🗑️ DESMONTAJE: El componente va a desaparecer
+      console.log("¡Adiós! Me voy de la pantalla");
+    };
+  }, []); // ← Array vacío = solo montaje y desmontaje
+
+  useEffect(() => {
+    // 🔄 ACTUALIZACIÓN: El componente cambió algo
+    console.log("¡Algo cambió en mí!");
+  }, [count]); // ← Cuando count cambia
+}
+```
+
+**TODOS** los componentes de React siguen este patrón:
+
+1. **Se crean** (aparecen en pantalla)
+2. **Se actualizan** (cuando cambia su estado o props)
+3. **Se destruyen** (desaparecen de pantalla)
+
+**Ejemplo real:** Ir de página de Login → Dashboard
+
+- Login se **desmonta** (desaparece)
+- Dashboard se **monta** (aparece)
+
+### 6. ¿Qué es un Memory Leak?
+
+**Memory Leak = "Fuga de memoria"**
+Es cuando tu código sigue "trabajando" aunque ya no lo necesites, desperdiciando recursos.
+
+**Ejemplo sin cleanup (❌ MAL):**
+
+```jsx
+function Reloj() {
+  const [hora, setHora] = useState(new Date());
+
+  useEffect(() => {
+    setInterval(() => {
+      setHora(new Date()); // ← Esto sigue corriendo SIEMPRE
+    }, 1000);
+  }, []);
+
+  return <div>{hora.toLocaleTimeString()}</div>;
+}
+
+// Si el componente desaparece de pantalla, el timer sigue corriendo!
+// Resultado: La app se vuelve lenta y consume más memoria
+```
+
+**Ejemplo con cleanup (✅ BIEN):**
+
+```jsx
+function Reloj() {
+  const [hora, setHora] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHora(new Date()); // ← Actualiza hora cada 1 seg
+    }, 1000);
+
+    // 🧹 Cleanup: "limpia" cuando el componente se va
+    return () => {
+      clearInterval(timer); // ← Para el timer
+    };
+  }, []);
+
+  return <div>{hora.toLocaleTimeString()}</div>;
+}
+
+// setInterval y clearInterval son funciones nativas del navegador (JS)
+```
+
+\*\*
 
 ---
 
-## 💻 Práctica - Ejemplos paso a paso
+## 💻 Práctica - Ejemplos Concisos
 
-**🎯 Objetivo:** Entender useEffect a través de 4 ejemplos prácticos que van de simple a complejo, cubriendo los casos de uso más comunes en aplicaciones React.
-
-### Ejemplo 1: Reloj Digital
-
-**📚 Conceptos que aprenderás:**
-
-- useEffect con array vacío `[]`
-- setInterval en React
-- Cleanup para evitar memory leaks
-- Manejo de fechas en JavaScript
+### Ejemplo 1: Contador con Control
 
 ```jsx
-import { useState, useEffect } from "react";
-
-function RelojDigital() {
-  // Estado para guardar la hora actual
-  const [hora, setHora] = useState(new Date());
-
-  // useEffect que se ejecuta solo una vez al montar el componente
-  useEffect(() => {
-    console.log("⏰ Configurando el reloj...");
-
-    // Crear un timer que actualice la hora cada segundo
-    const timer = setInterval(() => {
-      console.log("🔄 Actualizando hora...");
-      setHora(new Date()); // Crear nueva fecha con hora actual
-    }, 1000); // 1000ms = 1 segundo
-
-    // 🧹 Función de cleanup (MUY IMPORTANTE)
-    // Se ejecuta cuando el componente se desmonta
-    return () => {
-      console.log("🛑 Limpiando timer del reloj");
-      clearInterval(timer); // Limpiar el timer para evitar memory leaks
-    };
-  }, []); // Array vacío = solo al montar el componente
-
-  // Formatear la hora para mostrarla bonita
-  const horaFormateada = hora.toLocaleTimeString("es-AR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
-
-  return (
-    <div className="text-center p-8 bg-gray-900 text-white rounded-lg">
-      <h2 className="text-lg mb-4">🕐 Reloj Digital</h2>
-      <div className="text-4xl font-mono font-bold">{horaFormateada}</div>
-      <div className="text-sm mt-2 text-gray-300">
-        {hora.toLocaleDateString("es-AR", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-      </div>
-    </div>
-  );
-}
-```
-
-**🔍 Análisis detallado:**
-
-- **¿Por qué `[]` en useEffect?** Queremos que el timer se cree solo UNA vez
-- **¿Qué pasa sin cleanup?** Si el componente se desmonta, el timer sigue corriendo → memory leak
-- **new Date()** crea un objeto con la fecha/hora actual del sistema
-
-### Ejemplo 2: Contador Automático
-
-**📚 Conceptos que aprenderás:**
-
-- useEffect que depende de una variable `[activo]`
-- Estados booleanos para controlar comportamiento
-- Conditional timer (timer que se puede pausar/reanudar)
-
-```jsx
-function ContadorAutomatico() {
+function ContadorControlado() {
   const [count, setCount] = useState(0);
-  const [activo, setActivo] = useState(false); // Control de play/pause
-  const [velocidad, setVelocidad] = useState(1000); // Velocidad en ms
+  const [activo, setActivo] = useState(false);
 
-  // useEffect que se ejecuta cuando 'activo' o 'velocidad' cambian
   useEffect(() => {
     let timer;
 
-    console.log(`🎮 Estado del contador: ${activo ? "ACTIVO" : "PAUSADO"}`);
-
     if (activo) {
-      // Solo crear timer si está activo
+      // ✅ Solo crear timer si está activo
       timer = setInterval(() => {
-        console.log("📈 Incrementando contador...");
-        // Usar función para acceder al valor anterior
-        setCount((prevCount) => prevCount + 1);
-      }, velocidad);
+        setCount((prev) => prev + 1); // ← Usar función para estado anterior
+      }, 1000);
     }
 
-    // Cleanup: limpiar timer siempre (activo o no)
     return () => {
-      if (timer) {
-        console.log("🧹 Limpiando timer del contador");
-        clearInterval(timer);
-      }
+      if (timer) clearInterval(timer);
     };
-  }, [activo, velocidad]); // Se ejecuta cuando cualquiera de estos cambia
-
-  // Función para resetear el contador
-  const resetear = () => {
-    setCount(0);
-    setActivo(false);
-  };
+  }, [activo]); // ← Se ejecuta cuando activo cambia
 
   return (
-    <div className="text-center p-6 bg-blue-50 rounded-lg">
-      <h2 className="text-xl mb-4">🔄 Contador Automático</h2>
-
-      {/* Mostrar contador */}
-      <div className="text-6xl font-bold text-blue-600 mb-4">{count}</div>
-
-      {/* Controles */}
-      <div className="flex gap-2 justify-center mb-4">
-        <button
-          onClick={() => setActivo(!activo)}
-          className={`px-4 py-2 rounded font-semibold ${
-            activo
-              ? "bg-red-500 hover:bg-red-600 text-white"
-              : "bg-green-500 hover:bg-green-600 text-white"
-          }`}
-        >
-          {activo ? "⏸️ Pausar" : "▶️ Iniciar"}
-        </button>
-
-        <button
-          onClick={resetear}
-          className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded"
-        >
-          🔄 Reset
-        </button>
-      </div>
-
-      {/* Control de velocidad */}
-      <div>
-        <label className="block text-sm font-medium mb-2">
-          Velocidad: {velocidad}ms ({1000 / velocidad} por segundo)
-        </label>
-        <input
-          type="range"
-          min="100" // Muy rápido
-          max="3000" // Muy lento
-          value={velocidad}
-          onChange={(e) => setVelocidad(Number(e.target.value))}
-          className="w-full"
-        />
-        <div className="flex justify-between text-xs text-gray-500 mt-1">
-          <span>Rápido</span>
-          <span>Lento</span>
-        </div>
-      </div>
-
-      {/* Estado actual */}
-      <div className="mt-4 text-sm text-gray-600">
-        Estado: {activo ? "🟢 Corriendo" : "🔴 Pausado"}
-      </div>
+    <div>
+      <h2>Contador: {count}</h2>
+      <button onClick={() => setActivo(!activo)}>
+        {activo ? "⏸️ Pausar" : "▶️ Iniciar"}
+      </button>
     </div>
   );
 }
 ```
 
-**🔍 Puntos importantes:**
-
-- **Dependencias `[activo, velocidad]`:** El efecto se re-ejecuta cuando cualquiera cambia
-- **Cleanup condicional:** Siempre limpiamos, pero solo si existe un timer
-- **setCount con función:** `setCount(prev => prev + 1)` es más seguro que `setCount(count + 1)`
-
-### Ejemplo 3: Fetch de Datos desde API
-
-**🌐 ¿Qué es una API y qué diferencias hay con JavaScript vanilla?**
-
-**API (Application Programming Interface):** Es un "puente" que nos permite comunicarnos con un servidor para obtener o enviar datos. Es como un "mesero" que lleva tu pedido a la cocina y te trae la comida.
-
-**📊 Comparación JavaScript vanilla vs React:**
-
-| Aspecto                       | JavaScript Vanilla                            | React con useEffect                   |
-| ----------------------------- | --------------------------------------------- | ------------------------------------- |
-| **¿Cuándo hacer el fetch?**   | `window.onload` o cuando el usuario hace algo | `useEffect` con `[]` (al montarse)    |
-| **¿Dónde guardar los datos?** | Variables globales o DOM                      | Estado del componente (`useState`)    |
-| **¿Cómo mostrar loading?**    | Manipular DOM directamente                    | Estado `loading` + render condicional |
-| **¿Cómo manejar errores?**    | try/catch + manipular DOM                     | Estado `error` + mostrar mensaje      |
-
-**JavaScript Vanilla (lo que ya conocen):**
-
-```javascript
-// En JavaScript normal
-let usuarios = [];
-let loading = true;
-
-fetch("https://jsonplaceholder.typicode.com/users")
-  .then((response) => response.json())
-  .then((data) => {
-    usuarios = data;
-    loading = false;
-    // Manipular DOM manualmente
-    document.getElementById("lista").innerHTML = "...";
-  });
-```
-
-**React con useEffect (lo nuevo):**
+### Ejemplo 2: Fetch de API (Patrón Async Correcto)
 
 ```jsx
 function ListaUsuarios() {
-  // Estados para manejar datos, loading y errores
-  const [usuarios, setUsuarios] = useState([]); // Array vacío inicial
-  const [cargando, setCargando] = useState(true); // Empieza cargando
-  const [error, setError] = useState(null); // Sin error inicial
+  const [usuarios, setUsuarios] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Función asíncrona para obtener datos
-    async function cargarUsuarios() {
+    // 🚫 MAL: useEffect no puede ser async directamente
+    // useEffect(async () => { ... }, [])
+
+    // ✅ BIEN: Función async interna
+    async function fetchUsuarios() {
       try {
         setCargando(true);
-        // Fetch similar a JS vanilla
         const response = await fetch(
           "https://jsonplaceholder.typicode.com/users"
         );
 
-        // Verificar si la respuesta es exitosa
         if (!response.ok) {
-          throw new Error("Error en la respuesta del servidor");
+          throw new Error("Error en la API");
         }
 
         const data = await response.json();
-        setUsuarios(data); // Guardar en estado (no en variable global)
-        setError(null); // Limpiar errores anteriores
+        setUsuarios(data);
+        setError(null);
       } catch (err) {
-        setError(`Error al cargar usuarios: ${err.message}`);
-        setUsuarios([]); // Limpiar usuarios si hay error
+        setError(err.message);
+        setUsuarios([]);
       } finally {
-        setCargando(false); // Siempre quitar el loading
+        setCargando(false);
       }
     }
 
-    cargarUsuarios();
-  }, []); // ← Solo al montar el componente (una vez)
+    fetchUsuarios(); // ← Llamar la función async
+  }, []); // ← Solo al montar
 
-  // Renderizado condicional basado en el estado
-  if (cargando)
-    return <div className="text-center">🔄 Cargando usuarios...</div>;
-  if (error) return <div className="text-red-500">❌ {error}</div>;
+  // Renderizado condicional
+  if (cargando) return <div>🔄 Cargando...</div>;
+  if (error) return <div>❌ Error: {error}</div>;
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Usuarios ({usuarios.length})</h2>
-      <ul className="space-y-2">
-        {usuarios.map((user) => (
-          <li key={user.id} className="p-2 bg-gray-100 rounded">
-            <strong>{user.name}</strong> - {user.email}
-            <br />
-            <small className="text-gray-600">🌐 {user.website}</small>
-          </li>
-        ))}
-      </ul>
+      <h2>👥 Usuarios ({usuarios.length})</h2>
+      {usuarios.map((user) => (
+        <div key={user.id}>
+          {user.name} - {user.email}
+        </div>
+      ))}
     </div>
   );
 }
 ```
 
-**🔍 Análisis paso a paso:**
-
-1. **Estados iniciales:**
-
-   - `usuarios`: Array vacío `[]`
-   - `cargando`: `true` (para mostrar "Cargando...")
-   - `error`: `null` (sin errores inicialmente)
-
-2. **useEffect con dependencias vacías `[]`:**
-
-   - Se ejecuta solo UNA vez cuando el componente aparece en pantalla
-   - Similar a `window.onload` en JS vanilla
-
-3. **async/await:**
-
-   - Igual que en JavaScript vanilla
-   - Hace más legible el código asíncrono
-
-4. **Manejo de estados:**
-
-   - **Antes del fetch:** `setCargando(true)`
-   - **Si todo sale bien:** guardar datos y quitar error
-   - **Si hay error:** guardar mensaje de error y limpiar datos
-   - **Siempre al final:** `setCargando(false)`
-
-5. **Renderizado condicional:**
-   - Si está cargando → mostrar "Cargando..."
-   - Si hay error → mostrar mensaje de error
-   - Si todo OK → mostrar la lista
-
-### Ejemplo 4: LocalStorage - Persistencia de Datos 
-
-**🏪 ¿Qué es localStorage y por qué es útil?**
-
-**localStorage** es una "caja fuerte" en el navegador donde podemos guardar datos que persisten aunque cierres y abras la página. Es como guardar un archivo en tu computadora.
-
-**🔄 El problema que resuelve:**
+### Ejemplo 3: localStorage Persistencia
 
 ```jsx
-// Sin localStorage
-function TodoApp() {
-  const [todos, setTodos] = useState([]);
-  // Al recargar la página... ¡todos se pierden! 😱
-}
-
-// Con localStorage
-function TodoApp() {
+function TodosPersistentes() {
+  // 🔄 Inicializar desde localStorage
   const [todos, setTodos] = useState(() => {
-    // Al cargar la página, recuperamos los datos guardados
     const guardados = localStorage.getItem("todos");
     return guardados ? JSON.parse(guardados) : [];
   });
-  // Los todos persisten al recargar 🎉
-}
-```
 
-**📊 Comparación con JavaScript vanilla:**
-
-| JavaScript Vanilla                   | React + useEffect                     |
-| ------------------------------------ | ------------------------------------- |
-| `localStorage.setItem('key', value)` | Mismo método, pero en useEffect       |
-| `localStorage.getItem('key')`        | En función inicializadora de useState |
-| Manual: decidir cuándo guardar       | Automático: useEffect observa cambios |
-
-**Implementación completa:**
-
-```jsx
-function TodosConPersistencia() {
-  // 1️⃣ INICIALIZAR desde localStorage
-  const [todos, setTodos] = useState(() => {
-    console.log("🔄 Recuperando datos del localStorage...");
-    const guardados = localStorage.getItem("todos");
-
-    if (guardados) {
-      try {
-        const todosParseados = JSON.parse(guardados);
-        console.log("✅ Datos recuperados:", todosParseados);
-        return todosParseados;
-      } catch (error) {
-        console.error("❌ Error al parsear datos guardados:", error);
-        return [];
-      }
-    }
-
-    console.log("📝 No hay datos guardados, empezando con array vacío");
-    return [];
-  });
-
-  const [nuevaTarea, setNuevaTarea] = useState("");
-
-  // 2️⃣ GUARDAR automáticamente cuando todos cambie
+  // 💾 Guardar automáticamente cuando todos cambie
   useEffect(() => {
-    console.log("💾 Guardando en localStorage:", todos);
     localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]); // ← Se ejecuta cada vez que todos cambia
+  }, [todos]); // ← Cada vez que todos cambia
 
-  // 3️⃣ FUNCIONES para manipular todos
-  const agregarTarea = () => {
-    if (nuevaTarea.trim()) {
-      const nuevoTodo = {
-        id: Date.now(), // ID único basado en timestamp
-        title: nuevaTarea.trim(),
-        completed: false,
-        createdAt: new Date().toISOString(),
-      };
-
-      // Agregar al estado (que automáticamente se guardará por useEffect)
-      setTodos((prev) => [...prev, nuevoTodo]);
-      setNuevaTarea(""); // Limpiar input
-    }
+  const agregarTodo = (texto) => {
+    const nuevo = { id: Date.now(), texto, completado: false };
+    setTodos((prev) => [...prev, nuevo]); // ← Se guarda automáticamente
   };
 
-  const toggleTarea = (id) => {
-    setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  };
-
-  const eliminarTarea = (id) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
-  };
-
-  const limpiarCompletadas = () => {
-    setTodos((prev) => prev.filter((todo) => !todo.completed));
-  };
-
-  // 4️⃣ RENDERIZADO
   return (
-    <div className="max-w-md mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">📝 Todos Persistentes</h1>
-
-      {/* Formulario para agregar */}
-      <div className="flex gap-2 mb-4">
-        <input
-          type="text"
-          value={nuevaTarea}
-          onChange={(e) => setNuevaTarea(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && agregarTarea()}
-          placeholder="Escribe una tarea..."
-          className="flex-1 p-2 border rounded"
-        />
-        <button
-          onClick={agregarTarea}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          ➕
-        </button>
-      </div>
-
-      {/* Estadísticas */}
-      <div className="text-sm text-gray-600 mb-4">
-        Total: {todos.length} | Pendientes:{" "}
-        {todos.filter((t) => !t.completed).length} | Completadas:{" "}
-        {todos.filter((t) => t.completed).length}
-      </div>
-
-      {/* Lista de tareas */}
-      <ul className="space-y-2">
-        {todos.map((todo) => (
-          <li
-            key={todo.id}
-            className="flex items-center gap-2 p-2 bg-gray-50 rounded"
-          >
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => toggleTarea(todo.id)}
-            />
-            <span
-              className={`flex-1 ${
-                todo.completed ? "line-through text-gray-500" : ""
-              }`}
-            >
-              {todo.title}
-            </span>
-            <button
-              onClick={() => eliminarTarea(todo.id)}
-              className="text-red-500 hover:text-red-700"
-            >
-              🗑️
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      {todos.length === 0 && (
-        <p className="text-center text-gray-500 py-8">
-          No hay tareas. ¡Agrega una! 🎯
-        </p>
-      )}
-
-      {todos.some((t) => t.completed) && (
-        <button
-          onClick={limpiarCompletadas}
-          className="mt-4 w-full bg-red-500 text-white py-2 rounded hover:bg-red-600"
-        >
-          🧹 Limpiar Completadas
-        </button>
-      )}
+    <div>
+      <h2>📝 Todos Persistentes</h2>
+      <p>Total: {todos.length}</p>
+      {/* Resto del componente... */}
     </div>
   );
 }
 ```
 
-**🔍 Puntos clave de la persistencia:**
-
-1. **Inicialización inteligente:**
-
-   ```jsx
-   const [todos, setTodos] = useState(() => {
-     // Esta función solo se ejecuta una vez al crear el componente
-     const guardados = localStorage.getItem("todos");
-     return guardados ? JSON.parse(guardados) : [];
-   });
-   ```
-
-2. **Guardado automático:**
-
-   ```jsx
-   useEffect(() => {
-     localStorage.setItem("todos", JSON.stringify(todos));
-   }, [todos]); // Cada vez que todos cambia, se guarda automáticamente
-   ```
-
-3. **JSON.stringify y JSON.parse:**
-
-   - `JSON.stringify(objeto)` → convierte objeto a string para guardar
-   - `JSON.parse(string)` → convierte string de vuelta a objeto
-
-4. **Manejo de errores:**
-   - try/catch al parsear datos (por si están corruptos)
-   - Verificar si existen datos antes de parsear
-
 ---
 
-## 🎯 Puntos Clave para Recordar
+## ⚠️ Errores Comunes con useEffect
 
-### ✅ **DO - Buenas prácticas**
+### 1. **Dependencias faltantes**
 
 ```jsx
-// 1. Siempre incluir dependencias
+// ❌ MAL
+const [userId, setUserId] = useState(1);
 useEffect(() => {
-  fetchData(userId);
-}, [userId]); // ← userId en dependencias
+  fetchUser(userId); // ← userId debería estar en dependencias
+}, []); // ← Array vacío, pero usa userId
 
-// 2. Cleanup para evitar memory leaks
+// ✅ BIEN
 useEffect(() => {
-  const timer = setInterval(callback, 1000);
-  return () => clearInterval(timer); // ← Cleanup
-}, []);
-
-// 3. Estado inicial desde localStorage
-const [data, setData] = useState(() => {
-  return JSON.parse(localStorage.getItem("data")) || [];
-});
+  fetchUser(userId);
+}, [userId]); // ← Incluir userId
 ```
 
-### ❌ **DON'T - Errores comunes**
+### 2. **No hacer cleanup**
 
 ```jsx
-// ❌ Olvidar dependencias (puede causar bugs)
+// ❌ MAL - Memory leak
 useEffect(() => {
-  fetchData(userId);
-}, []); // Falta userId
-
-// ❌ No hacer cleanup de timers
-useEffect(() => {
-  setInterval(callback, 1000); // Memory leak!
+  setInterval(() => console.log("tick"), 1000);
 }, []);
 
-// ❌ Mutar estado directamente
+// ✅ BIEN - Con cleanup
 useEffect(() => {
-  data.push(newItem); // ❌ Mutación
-  setData(data);
+  const timer = setInterval(() => console.log("tick"), 1000);
+  return () => clearInterval(timer);
 }, []);
+```
+
+### 3. **useEffect async incorrecto**
+
+```jsx
+// ❌ MAL - useEffect no puede ser async
+useEffect(async () => {
+  const data = await fetchData();
+}, []);
+
+// ✅ BIEN - Función async interna
+useEffect(() => {
+  async function loadData() {
+    const data = await fetchData();
+    setData(data);
+  }
+  loadData();
+}, []);
+```
+
+### 4. **Loops infinitos**
+
+```jsx
+// ❌ MAL - Loop infinito
+const [data, setData] = useState([]);
+useEffect(() => {
+  setData([...data, newItem]); // ← Cambia data, triggerea useEffect otra vez
+}, [data]);
+
+// ✅ BIEN - Sin dependencia de data
+useEffect(() => {
+  setData((prev) => [...prev, newItem]);
+}, [newItem]); // ← Solo cuando newItem cambia
 ```
 
 ---
 
-## 🏆 Ejercicio Final (15 min)
+## 🎯 Resumen de Buenas Prácticas
 
-**Crear un componente que:**
+### ✅ **SÍ hacer:**
 
-1. Muestre un contador que se incremente automáticamente cada 2 segundos
-2. Permita pausar/reanudar con un botón
-3. Guarde el valor actual en localStorage
-4. Al recargar la página, recupere el valor guardado
+- Incluir todas las dependencias que uses
+- Hacer cleanup de timers, listeners, etc.
+- Usar funciones async internas (no useEffect async)
+- Inicializar estado desde localStorage con función
 
-```jsx
-function ContadorPersistente() {
-  // Tu código aquí...
-  // Pistas: useState, useEffect, localStorage, setInterval
-}
-```
+### ❌ **NO hacer:**
 
----
-
-## 📚 Recursos y Próxima Clase
-
-### Para practicar en casa:
-
-- Modificar el TodoList de la clase 5 para que persista en localStorage
-
-
-### Próxima clase:
-
-**Formularios avanzados y validación** - ¡Nos vemos el miércoles!
+- Olvidar dependencias (causa bugs)
+- Dejar timers sin limpiar (memory leaks)
+- Hacer useEffect async directamente
+- Mutar estado directamente en efectos
 
 ---
 
-_¿Preguntas? ¡Este es el momento perfecto para resolverlas!_ 🙋‍♂️🙋‍♀️
+## 🏆 Ejercicios práctico clase hoy
+
+**Modificar el TodoList de la clase 5 para que persista en localStorage**
+
+- Al recargar la página, las tareas deben seguir ahí
+- Usar el patrón que vimos en el Ejemplo 4
+
+---
+
+## 📚 Próxima Clase
+
+**Formularios avanzados y validación**
+
+## 🎥 Video de Referencia
+
+Tutorial completo de useEffect: [https://www.youtube.com/watch?v=KtBtkEDggOI](https://www.youtube.com/watch?v=KtBtkEDggOI)
