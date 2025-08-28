@@ -1,0 +1,45 @@
+{
+  // 🔧 Opciones del compilador TypeScript
+  "compilerOptions": {
+    // 🧠 Permite usar JSX con React
+    "jsx": "react-jsx",
+
+    // 📦 Módulo ESNext para compatibilidad con Vite
+    "module": "ESNext",
+
+    // 🎯 Target moderno para navegadores actuales
+    "target": "ESNext",
+
+    // 📁 Resolución de módulos estilo Node.js
+    "moduleResolution": "Node",
+
+    // 🧭 Permite usar rutas relativas desde src/
+    "baseUrl": "./src",
+
+    // 🛡️ Verifica que los archivos tengan tipos estrictos
+    "strict": true,
+
+    // 🧹 Elimina código no usado
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    // 🧩 Mejora la inferencia de tipos
+    "noImplicitAny": true,
+
+    // 🧱 Permite importar archivos JSON
+    "resolveJsonModule": true,
+
+    // 🧰 Incluye tipos para importaciones como imágenes o CSS
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // 🧼 Limpia el output para evitar errores innecesarios
+    "skipLibCheck": true
+  },
+
+  // 📂 Archivos que TypeScript debe incluir
+  "include": ["src"],
+
+  // 🚫 Archivos que debe ignorar
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,27 @@
+/* App.css */
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: #2a2a2a;
+  margin-top: 20px;
+  text-align: center;
+}
+
+p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 10px auto;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.app-container {
+  padding: 40px;
+}
