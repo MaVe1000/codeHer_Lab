@@ -8,6 +8,7 @@ const newId = () =>
   crypto?.randomUUID?.() ?? String(Date.now() + Math.random());
 
 export default function TodoApp() {
+
   // PASO 2: Inicializar estado desde localStorage
   const [todos, setTodos] = useState(() => {
     console.log("🔄 Intentando recuperar todos desde localStorage...");
@@ -45,6 +46,7 @@ export default function TodoApp() {
       console.error("❌ Error al parsear todos desde localStorage:", error);
       return []; // Array vacío si hay error
     }
+
   });
 
   const [filter, setFilter] = useState("all");
@@ -150,6 +152,6 @@ export default function TodoApp() {
 -> ¿Por qué en TodoApp? Porque es donde está el estado principal
 -> ¿Por qué función inicializadora? Para que solo lea localStorage una vez
 -> ¿Por qué useEffect con [todos]? Para guardar automáticamente cuando algo cambia
--> JSON.stringify/parse para convertir objeto ↔ string
+-> JSON.npara convertir objeto ↔ string
 
 */
