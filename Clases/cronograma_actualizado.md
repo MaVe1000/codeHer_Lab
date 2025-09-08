@@ -147,7 +147,7 @@ Después de completar las 6 clases de React, aún quedan algunos temas fundament
 
 ---
 
-### **Clase 9** - Miércoles 02/09 📅
+### **Clase 9** - Miércoles 03/09 📅
 
 **🧠 Teoría:** Introducción a Figma y Prototipado
 
@@ -168,6 +168,28 @@ Después de completar las 6 clases de React, aún quedan algunos temas fundament
 **📦 Entregable:** Wireframe y mockup básico en Figma
 
 ---
+
+### **Clase 10** - Lunes 08/09 📅
+
+**🧠 Teoría:** Introducción a Next.js (React Framework)
+
+- ¿Qué es Next.js y por qué usarlo en proyectos React?
+- Diferencias entre **Pages Router** y **App Router**
+- Estructura de carpetas en un proyecto con Next.js 13+
+- Concepto de `layout.jsx` y `page.jsx`
+- Uso de componentes compartidos (Header, Footer)
+- Manejo de estilos globales con `globals.css`
+
+**💻 Práctica:**
+
+- Crear un nuevo proyecto con `npx create-next-app@latest`
+  - Responder preguntas de instalación (App Router, Turbopack, TypeScript, etc.)
+- Configurar `layout.jsx` con un **Header** y un **Footer**
+- Crear páginas básicas: Inicio, Nosotros, Noticias, Contacto
+- Agregar una nueva página de **Actividades** (Deportes, Música y Arte)
+- Estilizar la web en tonos azules con `globals.css`
+
+## **📦 Entregable:** Proyecto básico en Next.js funcionando con 5 páginas y layout global.
 
 ## 🗓️ **SEMANA 5 EN ADELANTE** - Proyecto Integrador: Landing Page del Instituto
 
